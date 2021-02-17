@@ -197,3 +197,28 @@ sudo mount /dev/home-lvm/home-lvm /home
 ```
 /dev/home-lvm/home-lvm  /home ext4  defaults  0 0
 ```
+4. Генерируем файл в /home/:
+
+```
+sudo fallocate -l 100M test.txt
+```
+
+5. Снимаем snapshot:
+
+```
+sudo lvcreate -L 100MB -s -n home_snap /dev/home-lvm/home-lvm-snap
+```
+
+6. Удаляем файл:
+
+```
+sudo  rm -f /home/test.txt
+```
+
+7. Восстанавливаемся из snapshot:
+
+```
+sudo umount /home
+sudo lvconvert --merge /dev/home-lvm/home-lvm-snap
+sudo mount /home
+```
