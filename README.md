@@ -1,5 +1,5 @@
 # Otus3
-LVM
+## LVM
 на имеющемся образе /dev/mapper/VolGroup00-LogVol00 38G 738M 37G 2% / сделать следующее:
 
 -уменьшить том под / до 8G
@@ -25,3 +25,21 @@ LVM
 - восстановится со снэпшота
 
 - залоггировать работу можно с помощью утилиты script
+
+1. Уменьшить том под / до 8G.
+
+Выбираем диск /dev/sdb как наиболее крупный. Создаем physical volume.
+
+```
+sudo pvcreate /dev/sdb
+```
+Создаем Volume group.
+
+```
+sudo vgcreate vg_new_root /dev/sdb
+```
+Создаем Logical volume.
+
+```
+sudo lvcreate -l+100%FREE -n lv0 vg_new_root
+```
